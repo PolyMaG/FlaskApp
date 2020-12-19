@@ -2,15 +2,21 @@
 
 
 {% block title %}
-Index page
+Blueprint index page
 {% endblock title %}
 
 
 {% block content_title %}
-Index page
+Posts
 {% endblock content_title %}
 
 
 {% block content %}
-Some content
+
+{% for post in posts %}
+<p>
+    <a href='{{ url_for('posts.post_detail', slug=post.slug) }}'> {{ post.title }} </a>
+</p>
+{% endfor %}
+
 {% endblock content %}
