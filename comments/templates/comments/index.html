@@ -7,15 +7,18 @@ Blueprint index page
 
 
 {% block content_title %}
-Posts
+Comments
 {% endblock content_title %}
 
 
 {% block content %}
 
-{% for post in posts %}
+{% for comment in comments %}
 <p>
-    <a href='{{ url_for('posts.post_detail', slug=post.slug) }}'> {{ post.title }} </a>
+    <a href='{{ url_for('comments.comment_detail', slug=comment.slug) }}'> {{ comment.name }} </a>
+</p>
+<p>
+    {{ comment.body }}
 </p>
 {% endfor %}
 
