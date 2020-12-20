@@ -21,6 +21,7 @@ class Post(db.Model):
     slug = db.Column(db.String(140), unique=True)
     body = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.now())
+    comments = db.relationship("Comment", backref="post", lazy=True)
 
     def __init__(self, *args, **kwargs):
         super(Post, self).__init__(*args, **kwargs)
@@ -49,3 +50,18 @@ class Tag(db.Model):
 
     def __repr__(self):
         return "<Tag id: {}, name: {}>".format(self.id, self.name)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    body = db.Column(db.Text)
+    slug = db.Column(db.String(100))
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
+
+    def __init__(self, *args, **kwargs):
+        super(Comment, self).__init__(*args, **kwargs)
+        self.slug = slugify(self.name)
+
+    def __repr__(self):
+        return "<Comment id: {}, name: {}>".format(self.id, self.name)

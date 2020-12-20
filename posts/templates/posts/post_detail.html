@@ -21,4 +21,15 @@
 <div>
     {{ post.body }}
 </div>
+<div class='comments'>
+    {% for comment in comments %}
+
+    <a href='{{ url_for('posts.comment_detail', slug=comment.slug) }}'>{{ comment.name }}</a>
+
+    <p>
+        {{ comment.body }}
+    </p>
+
+    {% endfor %}
+</div>
 {% endblock content %}
