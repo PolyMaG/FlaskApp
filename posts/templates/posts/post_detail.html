@@ -26,10 +26,9 @@
 
     <a href='{{ url_for('comments.comment_detail', slug=comment.slug) }}'>{{ comment.name }}</a>
 
-    <p>
-        {{ comment.body }}
-    </p>
-
     {% endfor %}
+</div>
+<div class="mt-3">
+    <a class="btn btn-outline-primary btn-sm" href="{{ url_for('comments.create_comment') }}" role="button">Add comment</a>
 </div>
 {% endblock content %}
