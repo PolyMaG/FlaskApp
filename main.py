@@ -1,9 +1,7 @@
-from app import app, db
 import view
-
-from posts.blueprint import posts
+from app import app, db
 from comments.blueprint import comments
-
+from posts.blueprint import posts
 
 app.register_blueprint(posts, url_prefix="/posts")
 app.register_blueprint(comments, url_prefix="/comments")

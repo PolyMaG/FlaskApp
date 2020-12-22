@@ -5,7 +5,8 @@ from flask import request
 from flask import url_for
 
 from app import db
-from models import Post, Tag, Comment
+from models import Comment, Post, Tag
+
 from .forms import PostForm
 
 posts = Blueprint("posts", __name__, template_folder="templates")

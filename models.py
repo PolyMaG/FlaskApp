@@ -1,6 +1,7 @@
-from app import db
-from datetime import datetime
 import re
+from datetime import datetime
+
+from app import db
 
 
 def slugify(string):
@@ -49,7 +50,7 @@ class Tag(db.Model):
         self.slug = slugify(self.name)
 
     def __repr__(self):
-        return "<Tag id: {}, name: {}>".format(self.id, self.name)
+        return "{}".format(self.name)
 
 
 class Comment(db.Model):
