@@ -50,7 +50,7 @@ def index():
 
     pages = posts.paginate(page=page, per_page=5)
 
-    return render_template("posts/index.html", posts=posts, pages=pages)
+    return render_template("posts/index.html", pages=pages)
 
 
 @posts.route("/<slug>")

@@ -13,7 +13,7 @@ Comments
 
 {% block content %}
 
-{% for comment in comments %}
+{% for comment in pages.items %}
 <p>
     <a href='{{ url_for('comments.comment_detail', slug=comment.slug) }}'> {{ comment.name }} </a>
 </p>
@@ -21,5 +21,25 @@ Comments
     {{ comment.body }}
 </p>
 {% endfor %}
+
+<nav>
+    <ul class="pagination">
+        <li {% if not pages.has_prev %} class="page-item disabled" {% endif %}>
+            <a class="page-link" href="./?page={{ pages.prev_num }}" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+
+        {% for page in pages.iter_pages() %}
+
+        <li {% if page == pages.page %} class="page-item active" aria-current="page" {% endif %}>
+            <a class="page-link" href="./?page={{ page }}">{{ page }}</a>
+        </li>
+
+        {% endfor %}
+
+        <li {% if not pages.has_next %} class="page-item disabled" {% endif %}>
+            <a class="page-link" href="./?page={{ pages.next_num }}">Next</a>
+        </li>
+    </ul>
+</nav>
 
 {% endblock content %}

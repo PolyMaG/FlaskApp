@@ -33,13 +33,24 @@ def create_comment():
 @comments.route("/")
 def index():
     search = request.args.get("search")
+
+    page = request.args.get("page")
+
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
     if search:
         comments = Comment.query.filter(
             Comment.name.contains(search) | Comment.body.contains(search)
-        ).all()
+        )  # .all()
     else:
-        comments = Comment.query.all()
-    return render_template("comments/index.html", comments=comments)
+        comments = Comment.query #.all()
+
+    pages = comments.paginate(page=page, per_page=1)
+
+    return render_template("comments/index.html", pages=pages)
 
 
 @comments.route("/<slug>")
