@@ -30,11 +30,26 @@ def create_post():
     return render_template("posts/create_post.html", form=form)
 
 
+@posts.route("/<slug>/edit/", methods=["POST", "GET"])
+def edit_post(slug):
+    post = Post.query.filter(Post.slug == slug).first()
+
+    if request.method == "POST":
+        form = PostForm(formdata=request.form, obj=post)
+        form.populate_obj(post)
+        db.session.commit()
+
+        return redirect(url_for("posts.post_detail", slug=post.slug))
+
+    form = PostForm(obj=post)
+    return render_template("posts/edit_post.html", form=form, post=post)
+
+
 @posts.route("/")
 def index():
     search = request.args.get("search")
 
-    page = request.args.get('page')
+    page = request.args.get("page")
 
     if page and page.isdigit():
         page = int(page)
@@ -44,7 +59,7 @@ def index():
     if search:
         posts = Post.query.filter(
             Post.title.contains(search) | Post.body.contains(search)
-        ) #.all()
+        )  # .all()
     else:
         posts = Post.query.order_by(Post.created.desc())
 

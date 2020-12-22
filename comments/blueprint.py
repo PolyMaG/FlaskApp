@@ -30,6 +30,21 @@ def create_comment():
     return render_template("comments/create_comment.html", form=form)
 
 
+@comments.route("/<slug>/edit/", methods=["POST", "GET"])
+def edit_comment(slug):
+    comment = Comment.query.filter(Comment.slug == slug).first()
+
+    if request.method == "POST":
+        form = CommentForm(formdata=request.form, obj=comment)
+        form.populate_obj(comment)
+        db.session.commit()
+
+        return redirect(url_for("comments.comment_detail", slug=comment.slug))
+
+    form = CommentForm(obj=comment)
+    return render_template("comments/edit_comment.html", form=form, comment=comment)
+
+
 @comments.route("/")
 def index():
     search = request.args.get("search")
@@ -46,7 +61,7 @@ def index():
             Comment.name.contains(search) | Comment.body.contains(search)
         )  # .all()
     else:
-        comments = Comment.query #.all()
+        comments = Comment.query  # .all()
 
     pages = comments.paginate(page=page, per_page=1)
 
