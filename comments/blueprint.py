@@ -44,7 +44,7 @@ def index():
     else:
         comments = Comment.query  # .all()
 
-    pages = comments.paginate(page=page, per_page=5)
+    pages = comments.paginate(page=page, per_page=3)
 
     return render_template("comments/index.html", pages=pages)
 

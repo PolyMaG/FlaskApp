@@ -15,24 +15,43 @@ Posts
 
 {% for post in pages.items %}
 
-<div class="list-group">
-    <a href="{{ url_for('posts.post_detail', slug=post.slug) }}" class="list-group-item list-group-item-action"
-        aria-current="true">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ post.title }}</h5>
-            <small>{{ post.created }}</small>
-        </div>
-        <p class="mb-1">{{ post.body }}</p>
-        <div>Comments: <span class="badge bg-secondary rounded-pill">{{ post.comments|count }}</span></div>
-        <small>Tags:
-            {% for tag in post.tags %}
-            <span class="badge bg-primary">{{ tag.name }}</span>
-            {% endfor %}
-        </small>
-    </a>
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="{{ url_for('posts.post_detail', slug=post.slug) }}">{{ post.title }}</a></h5>
+                <small>Created {{ post.created }}</small>
+            </li>
+            <li class="list-group-item">{{ post.body | truncate(300) }}</li>
+            <li class="list-group-item">
+                <small>Comments:
+                    {% if post.comments|count %}
+                    <span class="badge bg-secondary rounded-pill">{{ post.comments|count }}</span>
+                    {% else %}
+                    -
+                    {% endif %}
+                </small>
+            </li>
+            <li class="list-group-item">
+                <small>Tags:
+                    {% if post.tags %}
+                    {% for tag in post.tags %}
+                    <a href='{{ url_for('posts.tag_detail', slug=tag.slug) }}'>
+                        <span class="badge bg-primary"> {{ tag.name }} </span>
+                    </a>
+                    {% endfor %}
+                    {% else %}
+                    -
+                    {% endif %}
+                </small>
+            </li>
+        </ul>
+    </div>
 </div>
+<p></p>
 
 {% endfor %}
+
 
 <nav>
     <ul class="pagination">

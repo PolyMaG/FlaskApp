@@ -16,18 +16,21 @@ Comments
 {% for comment in pages.items %}
 
 
-<div class="list-group">
-    <a href="{{ url_for('comments.comment_detail', slug=comment.slug) }}" class="list-group-item list-group-item-action"
-        aria-current="true">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ comment.name }}</h5>
-            <small class="text-muted">Post: {{ comment.post.title }}</small>
-        </div>
-
-        <p class="mb-1">{{ comment.body }}</p>
-
-    </a>
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a
+                        href="{{ url_for('comments.comment_detail', slug=comment.slug) }}">{{ comment.name }}</a></h5>
+                <small>Post:
+                    <a href='{{ url_for('posts.post_detail', slug=comment.post.slug) }}'>{{ comment.post.title }}</a>
+                </small>
+            </li>
+            <li class="list-group-item">{{ comment.body }}</li>
+        </ul>
+    </div>
 </div>
+<p></p>
 
 {% endfor %}
 
