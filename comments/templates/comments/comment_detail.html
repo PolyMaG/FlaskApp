@@ -7,25 +7,26 @@
 
 
 {% block content_title %}
-Post for "{{ comment.name }}" comment:
+<div class="offset-md-2">"{{ comment.name }}" comment:</div>
 {% endblock content_title %}
 
 
 {% block content %}
 
-{{ comment.body }}
+<div class="card offset-md-2" style="width: 38rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ comment.name }}</h5>
+        <p class="card-text">{{ comment.body }}</p>
+        <a class="btn btn-outline-secondary btn-sm fas fa-pencil-alt"
+            href="{{ url_for('comments.edit_comment', slug=comment.slug) }}" role="button"></a>
+        <a class="btn btn-outline-danger btn-sm far fa-trash-alt"
+            href="{{ url_for('comments.delete_comment', slug=comment.slug) }}" role="button"></a>
+    </div>
+    <div class="card-footer">
+        This comment was made for the "<a
+            href='{{ url_for('posts.post_detail', slug=post.slug) }}'>{{ post.title }}</a>" post
 
-<div class="mt-3">
-    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('comments.edit_comment', slug=comment.slug) }}"
-        role="button">Edit
-        comment</a>
+    </div>
 </div>
-
-<div class="post">
-    <a href='{{ url_for('posts.post_detail', slug=post.slug) }}'> {{ post.title }} </a>
-</div>
-
-
-
 
 {% endblock content %}

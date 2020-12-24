@@ -14,12 +14,21 @@ Comments
 {% block content %}
 
 {% for comment in pages.items %}
-<p>
-    <a href='{{ url_for('comments.comment_detail', slug=comment.slug) }}'> {{ comment.name }} </a>
-</p>
-<p>
-    {{ comment.body }}
-</p>
+
+
+<div class="list-group">
+    <a href="{{ url_for('comments.comment_detail', slug=comment.slug) }}" class="list-group-item list-group-item-action"
+        aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ comment.name }}</h5>
+            <small class="text-muted">Post: {{ comment.post.title }}</small>
+        </div>
+
+        <p class="mb-1">{{ comment.body }}</p>
+
+    </a>
+</div>
+
 {% endfor %}
 
 <nav>

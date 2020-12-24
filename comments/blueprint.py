@@ -11,28 +11,9 @@ from .forms import CommentForm
 comments = Blueprint("comments", __name__, template_folder="templates")
 
 
-@comments.route("/create", methods=["POST", "GET"])
-def create_comment():
-    if request.method == "POST":
-        name = request.form["name"]
-        body = request.form["body"]
-
-        try:
-            comment = Comment(name=name, body=body)
-            db.session.add(comment)
-            db.session.commit()
-        except Exception as e:
-            print(e)
-
-        return redirect(url_for("comments.index"))
-
-    form = CommentForm()
-    return render_template("comments/create_comment.html", form=form)
-
-
 @comments.route("/<slug>/edit/", methods=["POST", "GET"])
 def edit_comment(slug):
-    comment = Comment.query.filter(Comment.slug == slug).first()
+    comment = Comment.query.filter(Comment.slug == slug).first_or_404()
 
     if request.method == "POST":
         form = CommentForm(formdata=request.form, obj=comment)
@@ -63,13 +44,29 @@ def index():
     else:
         comments = Comment.query  # .all()
 
-    pages = comments.paginate(page=page, per_page=1)
+    pages = comments.paginate(page=page, per_page=5)
 
     return render_template("comments/index.html", pages=pages)
 
 
 @comments.route("/<slug>")
 def comment_detail(slug):
-    comment = Comment.query.filter(Comment.slug == slug).first()
+    comment = Comment.query.filter(Comment.slug == slug).first_or_404()
     post = comment.post
     return render_template("comments/comment_detail.html", comment=comment, post=post)
+
+
+@comments.route("/<slug>/delete", methods=["GET", "POST"])
+def delete_comment(slug):
+    comment = Comment.query.filter(Comment.slug == slug).first()
+    if request.method == "POST":
+
+        try:
+            db.session.delete(comment)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+
+        return redirect(url_for("comments.index"))
+
+    return render_template("comments/delete_comment.html", comment=comment)
