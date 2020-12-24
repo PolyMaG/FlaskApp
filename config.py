@@ -7,4 +7,4 @@ class Configuration(object):
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://{}:{}@localhost/flaskdb".format(
         os.getenv("POSTGRES_USER"), os.getenv("POSTGRES_PASSWORD")
     )
-    SECRET_KEY = "some secret key"
+    SECRET_KEY = os.getenv("SECRET_KEY")
