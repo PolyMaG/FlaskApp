@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - default
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/blog
+    restart: always
+    container_name: flask_api
+    command: python main.py
+
+  db:
+    env_file:
+      - .env
+    image: postgres:latest
+    networks:
+      - default
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+    default:
+
+volumes:
+    postgres_data:
